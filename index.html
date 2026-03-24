@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 💗</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet"><style>
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffd6e8, #ffe9c9, #dff7ff);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    padding: 40px 30px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    animation: fadeIn 1.5s ease;
+}
+
+h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.4em;
+    margin: 0 0 10px 0;
+    color: #ff6f91;
+}
+
+.name {
+    color: #ff4f7b;
+    font-weight: 600;
+}
+
+.message {
+    font-size: 1em;
+    color: #555;
+    margin-top: 15px;
+}
+
+button {
+    margin-top: 25px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px;
+    background: #ff6f91;
+    color: white;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.surprise {
+    display: none;
+    margin-top: 20px;
+    font-size: 1.1em;
+    color: #444;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);} 
+    to {opacity: 1; transform: translateY(0);} 
+}
+
+/* floating hearts */
+.heart {
+    position: absolute;
+    bottom: -20px;
+    font-size: 18px;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% {transform: translateY(0); opacity: 1;}
+    100% {transform: translateY(-100vh); opacity: 0;}
+}
+
+</style></head><body><div class="card">
+    <h1>Happy Birthday 🎂</h1>
+    <div class="message">To the sweetest person ever 💗</div><p class="message">
+    I hope your day is filled with happiness, laughter, and everything you love.
+    You deserve the best today and always ✨
+</p>
+
+<button onclick="showSurprise()">Tap for a surprise 💌</button>
+
+<div class="surprise" id="surprise">
+    You're one of the most special people in my life 💖<br>
+    Never stop smiling and being amazing 🌸
+</div>
+
+</div><script>
+function showSurprise() {
+    document.getElementById("surprise").style.display = "block";
+}
+
+// floating hearts
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💗";
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 6000);
+
+}, 400);
+</script></body>
+</html>
