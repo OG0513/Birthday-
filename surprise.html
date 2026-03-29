@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise Room</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: black;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        .button {
+            position: relative;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: black;
+            z-index: 10;
+        }
+        .room {
+            display: none;
+            height: 100vh;
+            background: pink;
+            position: relative;
+            overflow: hidden;
+        }
+        .window {
+            position: absolute;
+            width: 30%;
+            height: 40%;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: lightblue;
+            border: 5px solid white;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        .moon {
+            position: absolute;
+            background: yellow;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            top: 30%;
+            left: 60%;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function createStars(num) {
+            for (let i = 0; i < num; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                let size = Math.random() * 3;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                document.body.appendChild(star);
+            }
+        }
+
+        function showRoom() {
+            document.body.innerHTML = '';
+            document.body.style.background = 'pink';
+            const room = document.createElement('div');
+            room.className = 'room';
+            const windowDiv = document.createElement('div');
+            windowDiv.className = 'window';
+            const moon = document.createElement('div');
+            moon.className = 'moon';
+            windowDiv.appendChild(moon);
+            room.appendChild(windowDiv);
+            document.body.appendChild(room);
+        }
+
+        window.onload = function() {
+            createStars(100);
+            const button = document.createElement('button');
+            button.className = 'button';
+            button.innerText = 'Click to get surprised';
+            button.onclick = showRoom;
+            document.body.appendChild(button);
+        };
+    </script>
+</body>
+</html>
