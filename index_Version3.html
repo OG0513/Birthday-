@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise Room</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: black;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        .button {
+            position: relative;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: black;
+            z-index: 10;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+        .room-container {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0B0FF 50%, #FFD6E8 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .ceiling {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 15%;
+            background: linear-gradient(to bottom, #F5DEB3, #FFE4B5);
+            border-bottom: 3px solid #8B7355;
+        }
+        .walls-container {
+            display: flex;
+            height: 85%;
+            width: 100%;
+            position: relative;
+        }
+        .wall {
+            flex: 1;
+            position: relative;
+            border-right: 4px solid rgba(139, 69, 19, 0.5);
+        }
+        .wall:last-child {
+            border-right: none;
+        }
+        .left-wall {
+            background: linear-gradient(to right, #FF69B4 0%, #FFB6C1 100%);
+        }
+        .back-wall {
+            flex: 2;
+            background: linear-gradient(to bottom, #FFC0CB 0%, #FFDAB9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-left: 4px solid rgba(139, 69, 19, 0.5);
+            border-right: 4px solid rgba(139, 69, 19, 0.5);
+        }
+        .back-wall-content {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #FF1493;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .right-wall {
+            background: linear-gradient(to left, #FF69B4 0%, #FFB6C1 100%);
+        }
+        .pendant-lamp {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+        .lamp-chain {
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(to bottom, #C0C0C0, #808080);
+            margin: 0 auto;
+            box-shadow: inset -1px 0 2px rgba(0, 0, 0, 0.5);
+        }
+        .lamp-bulb {
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle at 30% 30%, #FFFF99, #FFD700);
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.5), inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+            animation: bulbGlow 2s ease-in-out infinite;
+        }
+        @keyframes bulbGlow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.5), inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 70px rgba(255, 215, 0, 0.7), inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+            }
+        }
+        .lamp-holder {
+            width: 30px;
+            height: 8px;
+            background: #DAA520;
+            border-radius: 4px;
+            margin: 0 auto;
+            box-shadow: inset -1px -1px 3px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .center-table {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+        .table-top {
+            width: 180px;
+            height: 120px;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #654321 100%);
+            border-radius: 10px 10px 5px 5px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), inset -2px -2px 5px rgba(0, 0, 0, 0.3), inset 2px 2px 5px rgba(255, 255, 255, 0.2);
+            position: relative;
+            border: 2px solid #654321;
+        }
+        .table-edge {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #654321, #8B4513, #654321);
+            border-radius: 0 0 5px 5px;
+        }
+        .table-leg-left {
+            position: absolute;
+            bottom: -80px;
+            left: 25px;
+            width: 15px;
+            height: 80px;
+            background: linear-gradient(to right, #654321, #8B4513, #654321);
+            border-radius: 3px;
+            box-shadow: -2px 0 3px rgba(0, 0, 0, 0.4), 2px 0 3px rgba(0, 0, 0, 0.2);
+        }
+        .table-leg-right {
+            position: absolute;
+            bottom: -80px;
+            right: 25px;
+            width: 15px;
+            height: 80px;
+            background: linear-gradient(to right, #654321, #8B4513, #654321);
+            border-radius: 3px;
+            box-shadow: -2px 0 3px rgba(0, 0, 0, 0.4), 2px 0 3px rgba(0, 0, 0, 0.2);
+        }
+        .table-decoration {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translate(-50%, -50%);
+            }
+            50% {
+                transform: translate(-50%, -60%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function createStars(num) {
+            for (let i = 0; i < num; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                let size = Math.random() * 3;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                document.body.appendChild(star);
+            }
+        }
+
+        function showRoom() {
+            document.body.innerHTML = '';
+            
+            const roomContainer = document.createElement('div');
+            roomContainer.className = 'room-container';
+            roomContainer.style.display = 'flex';
+            roomContainer.style.flexDirection = 'column';
+            
+            // Create ceiling with lamp
+            const ceiling = document.createElement('div');
+            ceiling.className = 'ceiling';
+            
+            // Create pendant lamp
+            const pendantLamp = document.createElement('div');
+            pendantLamp.className = 'pendant-lamp';
+            
+            const lampChain = document.createElement('div');
+            lampChain.className = 'lamp-chain';
+            
+            const lampBulb = document.createElement('div');
+            lampBulb.className = 'lamp-bulb';
+            
+            const lampHolder = document.createElement('div');
+            lampHolder.className = 'lamp-holder';
+            
+            pendantLamp.appendChild(lampChain);
+            pendantLamp.appendChild(lampBulb);
+            pendantLamp.appendChild(lampHolder);
+            ceiling.appendChild(pendantLamp);
+            roomContainer.appendChild(ceiling);
+            
+            // Create walls container
+            const wallsContainer = document.createElement('div');
+            wallsContainer.className = 'walls-container';
+            
+            // Left wall
+            const leftWall = document.createElement('div');
+            leftWall.className = 'wall left-wall';
+            
+            // Back wall
+            const backWall = document.createElement('div');
+            backWall.className = 'wall back-wall';
+            const backWallContent = document.createElement('div');
+            backWallContent.className = 'back-wall-content';
+            backWallContent.innerHTML = '🎉 Happy Birthday! 🎉<br><span style="font-size: 28px; margin-top: 10px; display: block;">Surprise! 🎂</span>';
+            backWall.appendChild(backWallContent);
+            
+            // Right wall
+            const rightWall = document.createElement('div');
+            rightWall.className = 'wall right-wall';
+            
+            wallsContainer.appendChild(leftWall);
+            wallsContainer.appendChild(backWall);
+            wallsContainer.appendChild(rightWall);
+            roomContainer.appendChild(wallsContainer);
+            
+            // Create center table
+            const centerTable = document.createElement('div');
+            centerTable.className = 'center-table';
+            
+            const tableTop = document.createElement('div');
+            tableTop.className = 'table-top';
+            
+            const tableEdge = document.createElement('div');
+            tableEdge.className = 'table-edge';
+            tableTop.appendChild(tableEdge);
+            
+            const tableDecoration = document.createElement('div');
+            tableDecoration.className = 'table-decoration';
+            tableDecoration.innerHTML = '🎁';
+            tableTop.appendChild(tableDecoration);
+            
+            const tableLeftLeg = document.createElement('div');
+            tableLeftLeg.className = 'table-leg-left';
+            
+            const tableRightLeg = document.createElement('div');
+            tableRightLeg.className = 'table-leg-right';
+            
+            centerTable.appendChild(tableTop);
+            centerTable.appendChild(tableLeftLeg);
+            centerTable.appendChild(tableRightLeg);
+            roomContainer.appendChild(centerTable);
+            
+            document.body.appendChild(roomContainer);
+        }
+
+        window.onload = function() {
+            createStars(100);
+            const button = document.createElement('button');
+            button.className = 'button';
+            button.innerText = '🎈 Click to get surprised 🎈';
+            button.onclick = showRoom;
+            document.body.appendChild(button);
+        };
+    </script>
+</body>
+</html>
